@@ -6,6 +6,14 @@ def main(page: ft.Page):
     page.title = "Andre APP"
     t = ft.Text(value="Hello, world!", color="blue", size=30)
     page.controls.append(t)
+    page.bgcolor = "#010101"
+    page.window_always_on_top = False
+    # page.window.left = 200
+    # page.window.top = 200
+    # page.height = 200
+    # page.width = 200
+    
+    page.update()
     
     def add_clicked(e):
         page.add(ft.Checkbox(label=new_task.value))
@@ -13,9 +21,10 @@ def main(page: ft.Page):
         new_task.focus()
         new_task.update()
 
-    new_task = ft.TextField(hint_text="What's needs to be done?", width=300)
-    page.add(ft.Row([new_task, ft.ElevatedButton("Add", on_click=add_clicked)]))
-    # page.update()
+    new_task = ft.TextField(hint_text="What's needs to be done?", width=230)
+    new_task_2 = ft.TextField(hint_text="done?", width=300)
+    page.add(ft.Row([new_task, ft.ElevatedButton("Add", on_click=add_clicked), new_task_2]))
+    
     
     # for i in range(10):
     #     t.value = f"Step {i}"
