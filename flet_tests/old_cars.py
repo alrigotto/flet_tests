@@ -1,4 +1,5 @@
 import flet as ft
+from database_cars import cars
 
 def main(page: ft.Page):
     
@@ -14,6 +15,16 @@ def main(page: ft.Page):
     def check_item_clicked(e): ## Toggle the checkmark symbol on and off
         e.control.checked = not e.control.checked
         page.update()
+        
+    def show_car_description(e):
+        car = next((car for car in cars if car["id"] == e.control.parent.key), None)
+        dialog = ft.AlertDialog(
+            title = ft.Text(car["descricao"]),
+            actions = [
+                ft.TextButton("Fechar", on_click = lambda e: page.close(dialog))
+            ]
+        )
+        page.open(dialog)
     
     
     
@@ -53,10 +64,44 @@ def main(page: ft.Page):
                 
             )
         ]
-        
-        
-        
     )
+    
+    cars_list = ft.Column(
+        scroll = ft.ScrollMode.ALWAYS,
+        expand = True,
+    )
+    
+    for car in cars:
+        car_component = ft.ListTile(
+            leading = ft.Image(
+                src = car["foto"],
+                fit = ft.ImageFit.COVER,
+                repeat = ft.ImageRepeat.NO_REPEAT,
+                height = 100,
+                width = 80,
+                border_radius = 5,
+            ),
+            title = ft.Text(f'{car["modelo"]} - {car["marca"]}'),
+            subtitle = ft.Text(car["ano"],),
+            trailing = ft.PopupMenuButton(
+                key = car["id"],
+                icon = ft.icons.MORE_VERT,
+                items = [
+                    ft.PopupMenuItem(
+                        icon = ft.icons.REMOVE_RED_EYE_SHARP,
+                        text = "Ver Descrição",
+                        on_click = show_car_description,
+                    ),
+                    ft.PopupMenuItem(
+                        icon = ft.icons.DELETE,
+                        text = "Deletar",
+                        # on_click = ,
+                    )
+                ]
+            )
+        )
+        cars_list.controls.append(car_component)
+    
     nav_bar = ft.NavigationBar(
         destinations = [
             ft.NavigationBarDestination(
@@ -76,7 +121,8 @@ def main(page: ft.Page):
     
     page.add(
         app_bar,
-        nav_bar
+        nav_bar,
+        cars_list,
     )
     
 
