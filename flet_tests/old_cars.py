@@ -25,6 +25,10 @@ def main(page: ft.Page):
             ]
         )
         page.open(dialog)
+        
+    def delete_car(e):
+        e.control.parent.parent.visible = False
+        page.update()
     
     
     
@@ -85,17 +89,17 @@ def main(page: ft.Page):
             subtitle = ft.Text(car["ano"],),
             trailing = ft.PopupMenuButton(
                 key = car["id"],
-                icon = ft.icons.MORE_VERT,
+                icon = ft.Icons.MORE_VERT,
                 items = [
                     ft.PopupMenuItem(
-                        icon = ft.icons.REMOVE_RED_EYE_SHARP,
+                        icon = ft.Icons.REMOVE_RED_EYE_SHARP,
                         text = "Ver Descrição",
                         on_click = show_car_description,
                     ),
                     ft.PopupMenuItem(
-                        icon = ft.icons.DELETE,
+                        icon = ft.Icons.DELETE,
                         text = "Deletar",
-                        # on_click = ,
+                        on_click = delete_car,
                     )
                 ]
             )
